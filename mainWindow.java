@@ -23,7 +23,6 @@ public class mainWindow extends JFrame implements ActionListener {
 		this.setSize(600, 600);
 		this.setVisible(true);
 		this.setLayout(null);
-		help = new helpSolve();
 
 		startBtn.setSize(100, 50);
 		endBtn.setSize(100, 50);
@@ -49,6 +48,12 @@ public class mainWindow extends JFrame implements ActionListener {
 			endBtn.setVisible(false);
 			judgeBtn.setVisible(false);
 
+		} else if (e.getActionCommand() == "線上解題") {
+			help = new helpSolve();
+			this.add(help);
+			startBtn.setVisible(false);
+			endBtn.setVisible(false);
+			judgeBtn.setVisible(false);
 		}
 
 		// else if(e.getActionCommand()=="線上解題")

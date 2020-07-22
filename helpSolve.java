@@ -23,15 +23,22 @@ import javax.swing.SwingUtilities;
 public class helpSolve extends JPanel implements ActionListener {
 	private SolveSudoku solve = new SolveSudoku();
 	private JTextField[] ansBoard = new JTextField[81];
+	private mainWindow main;
 
-	public helpSolve() {
+	public helpSolve(mainWindow m) {
 		// TODO Auto-generated constructor stub
+		main = m;
 		this.setSize(600, 600);
 		this.setLayout(null);
 		JButton output = new JButton("送出");
+		JButton last = new JButton("回到主頁");
 		output.setSize(100, 50);
-		output.setLocation(450, 450);
+		output.setLocation(450, 400);
 		output.addActionListener(this);
+		last.setSize(100, 50);
+		last.setLocation(450, 450);
+		last.addActionListener(this);
+		this.add(last);
 		this.add(output);
 
 		for (int i = 0; i < 9; ++i) {
@@ -113,6 +120,13 @@ public class helpSolve extends JPanel implements ActionListener {
 				}
 			}
 
+		} else if (e.getActionCommand() == "回到主頁") {
+			this.setVisible(false);
+			main.help = null;
+			main.startBtn.setVisible(true);
+			main.endBtn.setVisible(true);
+			main.judgeBtn.setVisible(true);
 		}
 	}
+
 }

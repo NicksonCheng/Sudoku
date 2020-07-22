@@ -16,6 +16,7 @@ public interface simpleDocListener extends DocumentListener {
 
     @Override
     default void changedUpdate(DocumentEvent e) {
+        System.out.println(e);
         update(e);
     }
 }

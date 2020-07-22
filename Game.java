@@ -24,7 +24,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 @SuppressWarnings("serial")
-public class Game extends JPanel implements ActionListener, simpleDocListener {
+public class Game extends JPanel implements ActionListener {
 	private JTextField[] boardFinal = new JTextField[81];
 	private int[] board = new int[81];
 	private Random random = new Random();
@@ -33,17 +33,22 @@ public class Game extends JPanel implements ActionListener, simpleDocListener {
 	private JLabel timeWatcher;
 	private JLabel judgeJLabel = new JLabel("");
 	private int time = 0;
-	private JButton newGame = new JButton("確定");
-	private JButton state = new JButton("暫停");
-	private JButton hintBtn = new JButton("提示");
-	private Thread thread = new Thread();
 	private int firstEmpty = 0;
+	private JButton newGame = new JButton("新遊戲");
+	private JButton state = new JButton("暫停");
+	private JButton hintBtn = new JButton("主頁面");
+	private Thread thread = new Thread();
+
 	private SolveSudoku solve;
 	private boolean timeState = true;
+	private JOptionPane win = new JOptionPane();
+	private FocusListener focus;
+	private mainWindow main;
 
-	public Game() {
+	public Game(mainWindow m) {
 		solve = new SolveSudoku();
-
+		// gain mainwindow pointer
+		main = m;
 		// TODO Auto-generated constructor stub
 		this.setSize(600, 600);
 		// BorderLayout border=new BorderLayout();
@@ -52,11 +57,13 @@ public class Game extends JPanel implements ActionListener, simpleDocListener {
 		// this.setBorder(border);
 		timeWatcher = new JLabel("時間:");
 		timeWatcher.setSize(50, 50);
+		this.add(timeWatcher);
+		this.add(win);
 		judgeJLabel.setSize(50, 50);
 		judgeJLabel.setForeground(Color.red);
 		judgeJLabel.setLocation(450, 200);
 		// timeWatcher.setLocation(450,450);
-		this.add(timeWatcher);
+
 		this.add(judgeJLabel);
 
 		newGame.setSize(100, 50);
@@ -128,17 +135,60 @@ public class Game extends JPanel implements ActionListener, simpleDocListener {
 				boardFinal[firstEmpty].requestFocus();
 			}
 		});
+		focus = new FocusListener() {
 
-		for (int i = 0; i < 81; ++i) {
-			System.out.println("fuck");
-			boardFinal[i].getDocument().addDocumentListener(new simpleDocListener() {
-				@Override
-				public void update(DocumentEvent e) {
-					System.out.println(e);
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				int editAble = 0;
+				for (int i = 0; i < 81; ++i) {
+					if (!boardFinal[i].isEditable())
+						++editAble;
 				}
+				if (editAble >= 81) {
+					JOptionPane win = new JOptionPane();
+					win.showConfirmDialog(null, "你贏了!!", "勝利", JOptionPane.OK_OPTION);
+					for (int i = 0; i < 81; ++i) {
+						boardFinal[i].removeFocusListener(focus);
+					}
+				} else {
+					for (int i = 0; i < 81; ++i) {
 
-				// System.out.println(boardFinal[index].getText());
-			});
+						if (e.getSource() == boardFinal[i]) {
+							String input = boardFinal[i].getText();
+							String ans = Integer.toString(board[i]);
+							if (!input.isEmpty()) {
+
+								// System.out.println(boardFinal[i].getText());
+								System.out.println(Integer.toString(board[i]));
+								Timer t = new Timer();
+								if (!input.equals(ans)) {
+									judgeJLabel.setText("錯誤!");
+									boardFinal[i].setText("");
+
+								} else {
+									judgeJLabel.setText("正確!");
+									boardFinal[i].setEditable(false);
+								}
+
+							}
+
+						}
+						// System.out.println(boardFinal[index].getText());
+					}
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				// System.out.println("in!!");
+			}
+		};
+		for (int i = 0; i < 81; ++i) {
+
+			boardFinal[i].addFocusListener(focus);
+
 		}
 
 	}
@@ -171,8 +221,13 @@ public class Game extends JPanel implements ActionListener, simpleDocListener {
 			}
 			this.state.setText("暫停");
 			timeState = true;
+		} else if (e.getActionCommand() == "主頁面") {
+			this.setVisible(false);
+			main.game = null;
+			main.startBtn.setVisible(true);
+			main.endBtn.setVisible(true);
+			main.judgeBtn.setVisible(true);
 		}
-
 	}
 
 	public void randomInit() {
@@ -210,6 +265,12 @@ public class Game extends JPanel implements ActionListener, simpleDocListener {
 		do {
 
 			randomInit();
+			// for (int i = 0; i < 81; i += 9) {
+			// for (int j = 0; j < 9; ++j)
+			// System.out.print(board[i + j]);
+			// System.out.println();
+			// }
+			// System.out.println();
 
 			for (int i = 0; i < 81; ++i) {
 				if (board[i] < 0) {
@@ -234,7 +295,10 @@ public class Game extends JPanel implements ActionListener, simpleDocListener {
 			}
 
 		}
+		// boardFinal[0].setText("");
+		// boardFinal[0].setEditable(true);
 		// digBoard=Arrays.copyOf(board, 81);
+
 		ArrayList<Integer> num = new ArrayList<Integer>();
 		for (int i = 0; i < 81; ++i)
 			num.add(i);

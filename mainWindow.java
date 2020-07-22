@@ -12,11 +12,11 @@ import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class mainWindow extends JFrame implements ActionListener {
-	private Game game;
-	private helpSolve help;
-	private JButton startBtn = new JButton("開始遊戲");
-	private JButton endBtn = new JButton("結束遊戲");
-	private JButton judgeBtn = new JButton("線上解題");
+	public Game game;
+	public helpSolve help;
+	public JButton startBtn = new JButton("開始遊戲");
+	public JButton endBtn = new JButton("結束遊戲");
+	public JButton judgeBtn = new JButton("線上解題");
 
 	public mainWindow() {
 		// TODO Auto-generated constructor stub
@@ -42,15 +42,19 @@ public class mainWindow extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// System.out.println(e.getActionCommand());
 		if (e.getActionCommand() == "開始遊戲") {
-			game = new Game();
+			game = new Game(this);
 			this.add(game);
+			// game.setVisible(true);
+			// help.setVisible(false);
 			startBtn.setVisible(false);
 			endBtn.setVisible(false);
 			judgeBtn.setVisible(false);
 
 		} else if (e.getActionCommand() == "線上解題") {
-			help = new helpSolve();
+			help = new helpSolve(this);
 			this.add(help);
+			// game.setVisible(false);
+			// help.setVisible(true);
 			startBtn.setVisible(false);
 			endBtn.setVisible(false);
 			judgeBtn.setVisible(false);

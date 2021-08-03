@@ -7,5 +7,5 @@ use java to write a Sudoku game
 then dig the square to generate to sudoku game
 2. use timer to record to user's playing time
 3. hint to show the error answer
-
+<p><img src="./error.png" width="400" height="400"/><p>
 

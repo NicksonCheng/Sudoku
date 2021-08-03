@@ -86,7 +86,7 @@ public class helpSolve extends JPanel implements ActionListener {
 
 			} else {
 
-				// 開始解題
+				// start to solve
 				ArrayList<Integer> leaveIndex = new ArrayList<Integer>();
 				int[] board = new int[81];
 				for (int i = 0; i < 81; ++i) {
@@ -111,7 +111,7 @@ public class helpSolve extends JPanel implements ActionListener {
 				boolean flag = solve.solveSudoku(0, leaveIndex, board);
 				// System.out.println(flag);
 				if (flag) {
-					// 有解
+					// have answer
 					for (int i = 0; i < 81; ++i)
 						ansBoard[i].setText(Integer.toString(board[i]) + 1);
 				} else {

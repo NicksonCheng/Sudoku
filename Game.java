@@ -36,6 +36,7 @@ public class Game extends JPanel implements ActionListener {
 	private int firstEmpty = 0;
 	private JButton newGame = new JButton("新遊戲");
 	private JButton state = new JButton("暫停");
+	private JButton answer = new JButton("解答");
 	private JButton hintBtn = new JButton("主頁面");
 	private Thread thread = new Thread();
 
@@ -69,6 +70,8 @@ public class Game extends JPanel implements ActionListener {
 		newGame.setSize(100, 50);
 		state.setSize(100, 50);
 		hintBtn.setSize(100, 50);
+		answer.setSize(100, 50);
+		answer.setLocation(450, 350);
 		newGame.setLocation(450, 400);
 		state.setLocation(450, 450);
 		hintBtn.setLocation(450, 500);
@@ -78,6 +81,7 @@ public class Game extends JPanel implements ActionListener {
 		this.add(newGame);
 		this.add(state);
 		this.add(hintBtn);
+		this.add(answer);
 
 		// System.out.print("successful");
 		for (int i = 0; i < 9; ++i) {
@@ -234,7 +238,7 @@ public class Game extends JPanel implements ActionListener {
 		int pos;
 		int num = -1;
 
-		// ����������
+		//
 		for (int i = 0; i < 81; ++i)
 			board[i] = -1;
 		leaveIndex.clear();
@@ -314,9 +318,9 @@ public class Game extends JPanel implements ActionListener {
 
 	public boolean boardRule(int pos, int num) {
 
-		// ���row鋆⊿��蝑�
+		//
 		int rowPos = pos / 9;
-		// 瘥�olumn瑼Ｘ
+		//
 		for (int j = rowPos * 9; j < rowPos * 9 + 9; ++j) {
 			// System.out.print(board[j]+" ");
 			if (board[j] == num)
@@ -324,7 +328,7 @@ public class Game extends JPanel implements ActionListener {
 		}
 		// System.out.println();
 
-		// ���column��蝑�
+		//
 		int columnPos = pos % 9;
 		for (int i = 0; i <= 72; i += 9) {
 
@@ -333,7 +337,7 @@ public class Game extends JPanel implements ActionListener {
 		}
 
 		int boxPos = 0;
-		// ���銋悅���蝑�
+		//
 		for (int k = 0; k <= 6; k += 3) {
 			for (int p = 0; p <= 54; p += 27) {
 				if (pos == k + p)
